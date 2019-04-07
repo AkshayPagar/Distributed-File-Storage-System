@@ -29,6 +29,15 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
         self.databaseHandlerObj= databaseHandler()
         self.pickledbMetadataobj=pickledbMetadata(serverAddress)
 
+    def FileSearch(self, request, context):
+        username=request.username
+        filename=request.filename
+        print(username+" "+filename)
+        metadata= self.pickledbMetadataobj.getFileData(username)
+        if filename in metadata:
+            return fileService_pb2.ack(success=True, message="File Found!")
+        return fileService_pb2.ack(success=False, message="File not found")
+
     
     def UploadFile(self, request_iterator, context):
         activeIpList = self.activeNodeObj.getActiveIpsDict()
@@ -37,6 +46,9 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
             for chunk in request_iterator:
                 username= chunk.username
                 filename = chunk.filename
+                metadata= self.pickledbMetadataobj.getFileData(username)
+                if filename in metadata:
+                    return fileService_pb2.ack(success=True, message="File Already Present!")
                 destination= self.nodeSelect.leastUtilizedNode()
                 if destination==9999:
                     return fileService_pb2.ack(success=False, message="No active nodes!")

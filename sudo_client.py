@@ -54,8 +54,14 @@ def client():
             name= input("Name of file to download")
             stub = fileService_pb2_grpc.FileserviceStub(channel)
             response = stub.DownloadFile(fileService_pb2.FileInfo(username="akshay", filename=name))
-            save_chunks_to_file(response, "downloads/Downloaded.jpg")
+            save_chunks_to_file(response, "downloads/own.pdf")
             print("File downloaded. ")
+        elif choice==3:
+            channel = grpc.insecure_channel('127.0.0.1:3000')
+            name= input("Name of file to Search")
+            stub = fileService_pb2_grpc.FileserviceStub(channel)
+            response = stub.FileSearch(fileService_pb2.FileInfo(username="akshay", filename=name))
+            print(response)
         
 
 

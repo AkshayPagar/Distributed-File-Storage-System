@@ -25,10 +25,18 @@ class pickledbMetadata():
 
 	def getData(self, username,filename):
 		if not self.db.get(username)[filename]:
+			print("dta not found")
 			return False
 		else:
 			print(self.db.get(username)[filename])
 			return self.db.get(username)[filename]
+
+	def getFileData(self, username):
+		if not self.db.get(username):
+			return False
+		else:
+			print(self.db.get(username))
+			return self.db.get(username)
 
 if __name__ == '__main__':
 	obj= pickledbMetadata("server3000")
