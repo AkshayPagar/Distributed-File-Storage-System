@@ -37,6 +37,18 @@ class pickledbMetadata():
 		else:
 			print(self.db.get(username))
 			return self.db.get(username)
+	
+	def getFileList(self, username):
+		a= self.db.get(username)
+		if not a:
+			return ""
+		fileList = ""
+		for key,value in a.items():
+			fileList += key+','
+		if len(fileList) == 0:
+			return ""
+		result = fileList[:-1]
+		return result
 
 if __name__ == '__main__':
 	obj= pickledbMetadata("server3000")

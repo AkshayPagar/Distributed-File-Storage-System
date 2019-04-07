@@ -128,4 +128,10 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
         self.pickledbMetadataobj.insertData(request.username, request.filename, request.chunk_id, request.destination)
         return fileService_pb2.ack(success=True, message="MetaData has been saved!")
 
+    def FileList(self, request, context):
+        username = request.username
+        if not username:
+            return fileService_pb2.FileListResponse(Filenames="")
+        fileList = self.pickledbMetadataobj.getFileList(username)
+        return fileService_pb2.FileListResponse(Filenames=fileList)
     

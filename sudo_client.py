@@ -41,7 +41,7 @@ def save_chunks_to_file(chunks, filename):
 
 def client():
     while True: 
-        choice= int(input("What operation: 1. Upload 2. Download"))
+        choice= int(input("What operation: 1. Upload 2. Download 3. Search 4. List File : "))
         if choice==1:
             channel = grpc.insecure_channel('127.0.0.1:3000')
             fileName=input("FileName to be uploaded: ")
@@ -62,6 +62,13 @@ def client():
             stub = fileService_pb2_grpc.FileserviceStub(channel)
             response = stub.FileSearch(fileService_pb2.FileInfo(username="akshay", filename=name))
             print(response)
+        elif choice==4:
+            channel = grpc.insecure_channel('127.0.0.1:3000')
+            name= input("Enter username: ")
+            stub = fileService_pb2_grpc.FileserviceStub(channel)
+            fileList = stub.FileList(fileService_pb2.UserInfo(username=name))
+            # response = stub.DownloadFile(fileService_pb2.FileInfo(username="akshay", filename=name))
+            print("File List. ", fileList)
         
 
 
